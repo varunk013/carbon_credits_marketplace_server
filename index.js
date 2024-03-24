@@ -7,6 +7,7 @@ const connection = require("./config/db");
 const mongoose = require("mongoose");
 const routes = require("./routes");
 var cookieParser = require('cookie-parser')
+var corsOptionsDelegate = require("./utils/initCors");
 
 // database connection
 connection();
@@ -14,7 +15,7 @@ connection();
 // middlewares
 app.use(cookieParser())
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptionsDelegate));
 
 // base page
 app.get("/", (request, response) =>

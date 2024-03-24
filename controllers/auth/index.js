@@ -45,7 +45,12 @@ const handleSignIn = async (request, response) => {
 
             return response.status(200).json({
                 sucess: true,
-                message: "Login Sucessfull"
+                message: "Login Sucessfull",
+                user: {
+                    firstName,
+                    lastName, 
+                    email
+                }
             })
         }
 
@@ -100,7 +105,12 @@ const handleSignUp = async (request, response) => {
 
             return response.status(200).json({
                 sucess: true,
-                message: "Sign Up Sucessfull"
+                message: "Sign Up Sucessfull",
+                user: {
+                    firstName,
+                    lastName, 
+                    email
+                }
             })
         }
 
@@ -115,7 +125,7 @@ const handleSignUp = async (request, response) => {
 
 const handleContiniousAuthChecks = async (request, response) => {
     try {
-        
+
         const refreshToken = request.headers.cookie.split("=")[1];
 
         const decoded = JWT.verify(refreshToken, process.env.JWTREFRESHKEY);
@@ -130,7 +140,7 @@ const handleContiniousAuthChecks = async (request, response) => {
         if(isUserExists.length === 0) {
             return response.status(404).json({
                 sucess: false,
-                message: "User Not Found"
+                message: "User does not exists"
             })
         }
 
@@ -140,9 +150,15 @@ const handleContiniousAuthChecks = async (request, response) => {
 
         return response.status(200).json({
             success: true,
-            message: "Auth Verified"
+            message: "Auth Verified",
+            user: {
+                firstName,
+                lastName, 
+                email
+            }
         });
     } catch (error) {
+        console.log(error)
         return response.status(504).json({
             sucess: false,
             error: error.message
